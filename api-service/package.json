@@ -1,0 +1,22 @@
+{
+  "name": "api-service",
+  "version": "1.0.0",
+  "description": "API service for SubManager - handles subscriptions CRUD and enqueues jobs",
+  "main": "index.js",
+  "scripts": {
+    "migrate:create": "node-pg-migrate create --migration-file-language sql",
+    "migrate:up": "node-pg-migrate up"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "node-pg-migrate": "^9.0.0"
+  }
+}
