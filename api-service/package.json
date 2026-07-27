@@ -4,6 +4,8 @@
   "description": "API service for SubManager - handles subscriptions CRUD and enqueues jobs",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
     "migrate:create": "node-pg-migrate create --migration-file-language sql",
     "migrate:up": "node-pg-migrate up"
   },
