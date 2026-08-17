@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scheduler
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: scheduler
+          image: worker-service:latest
+          imagePullPolicy: IfNotPresent
+          command: ["node", "src/scheduler.js"]
+          envFrom:
+            - configMapRef:
+                name: submanager-config
+            - secretRef:
+                name: submanager-secret

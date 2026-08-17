@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SubManager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <h1>ניהול מנויים</h1>
+
+    <div class="card">
+      <h2>מנוי חדש</h2>
+      <form id="subscription-form">
+        <input type="hidden" id="subscription-id" />
+
+        <label>
+          שם
+          <input type="text" id="name" required />
+        </label>
+
+        <label>
+          מחיר (באגורות/סנט)
+          <input type="number" id="price" required />
+        </label>
+
+        <label>
+          מטבע
+          <select id="currency">
+            <option value="ILS">ILS</option>
+            <option value="USD">USD</option>
+          </select>
+        </label>
+
+        <label>
+          מחזור חיוב
+          <select id="billing_cycle">
+            <option value="monthly">monthly</option>
+            <option value="yearly">yearly</option>
+          </select>
+        </label>
+
+        <label>
+          תאריך חידוש
+          <input type="date" id="next_renewal_date" required />
+        </label>
+
+        <label>
+          <input type="checkbox" id="auto_renew" />
+          חידוש אוטומטי
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-button">הוסף מנוי</button>
+          <button type="button" id="cancel-button" style="display: none;">ביטול</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>המנויים שלי</h2>
+      <table id="subscriptions-table">
+        <thead>
+          <tr>
+            <th>שם</th>
+            <th>מחיר</th>
+            <th>מטבע</th>
+            <th>מחזור</th>
+            <th>תאריך חידוש</th>
+            <th>אוטומטי</th>
+            <th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody id="subscriptions-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
