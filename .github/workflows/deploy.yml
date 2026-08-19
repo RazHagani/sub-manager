@@ -49,6 +49,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            export KUBECONFIG=/home/ubuntu/.kube/config
             kubectl set image deployment/api-service api-service=${{ env.API_IMAGE }}:${{ github.sha }}
             kubectl set image deployment/worker worker=${{ env.WORKER_IMAGE }}:${{ github.sha }}
             kubectl set image deployment/scan-worker scan-worker=${{ env.WORKER_IMAGE }}:${{ github.sha }}
