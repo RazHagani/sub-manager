@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: scan-worker
-          image: worker-service:latest
+          image: ghcr.io/razhagani/sub-manager-worker:latest
           imagePullPolicy: IfNotPresent
           command: ["node", "src/scan.worker.js"]
           envFrom:

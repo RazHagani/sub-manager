@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: worker-service:latest
+          image: ghcr.io/razhagani/sub-manager-worker:latest
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: api-service:latest
+          image: ghcr.io/razhagani/sub-manager-api:latest
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:

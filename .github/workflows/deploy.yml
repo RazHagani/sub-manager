@@ -1,0 +1,54 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api-service/**'
+      - 'worker-service/**'
+      - 'k8s/**'
+  workflow_dispatch: {}
+
+env:
+  API_IMAGE: ghcr.io/razhagani/sub-manager-api
+  WORKER_IMAGE: ghcr.io/razhagani/sub-manager-worker
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and push api-service image
+        run: |
+          docker build -t ${{ env.API_IMAGE }}:${{ github.sha }} -t ${{ env.API_IMAGE }}:latest ./api-service
+          docker push ${{ env.API_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.API_IMAGE }}:latest
+
+      - name: Build and push worker-service image
+        run: |
+          docker build -t ${{ env.WORKER_IMAGE }}:${{ github.sha }} -t ${{ env.WORKER_IMAGE }}:latest ./worker-service
+          docker push ${{ env.WORKER_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.WORKER_IMAGE }}:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            kubectl set image deployment/api-service api-service=${{ env.API_IMAGE }}:${{ github.sha }}
+            kubectl set image deployment/worker worker=${{ env.WORKER_IMAGE }}:${{ github.sha }}
+            kubectl set image deployment/scan-worker scan-worker=${{ env.WORKER_IMAGE }}:${{ github.sha }}
+            kubectl rollout status deployment/api-service
+            kubectl rollout status deployment/worker
+            kubectl rollout status deployment/scan-worker
